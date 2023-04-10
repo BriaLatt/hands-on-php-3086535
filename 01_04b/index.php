@@ -15,9 +15,10 @@ class MyConnect {
 	}
 	
 	public static function open_connection($name, $username, $password) {
-		if ( !isset(self:$connection) ) {
-			self::$connection = new MyConnect($name, $username, $password)
+		if ( !isset(self::$connection) ) {
+			self::$connection = new MyConnect($name, $username, $password);
 		}
+		return self::$connection;
 	}
 	public function get_info( $query ) {
 		//STUB
@@ -32,5 +33,8 @@ class MyConnect {
 	}
 }
 
-$db = new MyConnect( 'people', 'joe', 'hello_there' );
+$db = MyConnect::open_connection( 'people', 'joe', 'hello_there' );
+echo $db->get_db_name() . '<br/>';
+
+$db2 = MyConnect::open_connection('people', 'joe', 'hello_there');
 echo $db->get_db_name();
