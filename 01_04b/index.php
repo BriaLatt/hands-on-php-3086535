@@ -4,14 +4,21 @@ class MyConnect {
 	private $username;
 	private $password;
 	private $host;
+
+	private static $connection;
 	
-	function __construct($name, $username, $password) {
+	private function __construct($name, $username, $password) {
 		$this->db_name = $name;
 		$this->username = $username;
 		$this->password = $password;
 		$this->host = 'localhost';	
 	}
 	
+	public static function open_connection($name, $username, $password) {
+		if ( !isset(self:$connection) ) {
+			self::$connection = new MyConnect($name, $username, $password)
+		}
+	}
 	public function get_info( $query ) {
 		//STUB
 	}
