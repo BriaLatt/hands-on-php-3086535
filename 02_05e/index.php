@@ -79,6 +79,10 @@ function print_array($a) {
 						<label for="message">Your Message*:</label><br/>
 						<textarea name="message" required></textarea>
 					</div>
+					 <div>
+                <label for="phoneNumber">Your Phone Number*:</label><br />
+                <input type="tel" name="phoneNumber" required />
+            </div>
 					<div><input type="submit" name="submit" value="Contact Me" /></div>
 				</form>
 				</main>
