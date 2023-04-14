@@ -88,7 +88,7 @@ if (isset($_POST['submit'])) {
 	<main>
 		<h1>Contact Me</h1>
 		<?php if (isset($_COOKIE['form_submitted'])) { ?>
-			<p>You have already submitted the form. Thank you for your submission.</p>
+			<p>This form has been submitted.</p>
 		<?php } else { ?>
 			<form name="contact" method="POST" id="contact">
 				<div>
