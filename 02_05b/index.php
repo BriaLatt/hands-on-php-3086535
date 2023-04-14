@@ -7,21 +7,16 @@ function print_array($a)
 	echo '</pre>';
 }
 
-function get_users()
-{
-	return file_get_contents('visits.txt');
-}
+if (isset($_POST['submit'])) {
+	$timestamp = time();
+	$filename = 'form_submission_' . $timestamp . '.txt';
+	$form_data = "Name: " . $_POST['name'] . "\n";
+	$form_data .= "Email: " . $_POST['email'] . "\n";
+	$form_data .= "Message: " . $_POST['message'] . "\n";
+	$form_data .= "Phone Number: " . $_POST['phoneNumber'] . "\n";
+	file_put_contents($filename, $form_data);
 
-function log_visit()
-{
-	$visits = (int)file_get_contents('visits.txt');
-	$visits++;
-	file_put_contents('visits.txt', $visits);
-}
-
-if (!isset($_COOKIE['visited'])) {
-	setcookie('visited', true, time() + (86400 * 30));
-	log_visit();
+	setcookie('form_submitted', true, time() + (86400 * 30));
 }
 
 function sanitize_form()
@@ -30,11 +25,9 @@ function sanitize_form()
 	foreach ($_POST as $name => $value) {
 		switch ($name) {
 			case 'email':
-				echo 'in email';
 				$value = filter_var($value, FILTER_SANITIZE_EMAIL);
 				break;
 			case 'message':
-				echo 'in email';
 				$value = filter_var(htmlspecialchars($value), FILTER_SANITIZE_ADD_SLASHES);
 				break;
 			case 'phoneNumber':
@@ -50,15 +43,13 @@ function sanitize_form()
 		}
 		$_POST[$name] = $value;
 	}
-
 	return true;
 }
 
 if (isset($_POST['submit'])) {
 	sanitize_form();
 	print_array($_POST);
-}
-?>
+} ?>
 
 <!DOCTYPE html>
 <html>
@@ -96,27 +87,30 @@ if (isset($_POST['submit'])) {
 <body>
 	<main>
 		<h1>Contact Me</h1>
-		<form name="contact" method="POST" id="contact">
-			<div>
-				<label for="name">Your Name*:</label><br />
-				<input type="text" name="name" required />
-			</div>
-			<div>
-				<label for="email">Your Email*:</label><br />
-				<input type="email" name="email" required />
-			</div>
-			<div>
-				<label for="message">Your Message*:</label><br />
-				<textarea name="message" required></textarea>
-			</div>
-			<div>
-				<label for="phoneNumber">Your Phone Number*:</label><br />
-				<input type="tel" name="phoneNumber" required pattern="\(\d{3}\) \d{3}-\d{4}" title="Phone number must be in the format: (xxx) xxx-xxxx" />
-			</div>
-			<div><input type="submit" name="submit" value="Contact Me" /></div>
-		</form>
+		<?php if (isset($_COOKIE['form_submitted'])) { ?>
+			<p>You have already submitted the form. Thank you for your submission.</p>
+		<?php } else { ?>
+			<form name="contact" method="POST" id="contact">
+				<div>
+					<label for="name">Your Name*:</label><br />
+					<input type="text" name="name" required />
+				</div>
+				<div>
+					<label for="email">Your Email*:</label><br />
+					<input type="email" name="email" required />
+				</div>
+				<div>
+					<label for="message">Your Message*:</label><br />
+					<textarea name="message" required></textarea>
+				</div>
+				<div>
+					<label for="phoneNumber">Your Phone Number*:</label><br />
+					<input type="tel" name="phoneNumber" required pattern="\(\d{3}\) \d{3}-\d{4}" title="Phone number must be in the format: (xxx) xxx-xxxx" />
+				</div>
+				<div><input type="submit" name="submit" value="Contact Me" /></div>
+			</form>
+		<?php } ?>
 	</main>
-	<p><b><?php echo get_users(); ?></b> users have visited this site.</p>
 </body>
 
 </html>
