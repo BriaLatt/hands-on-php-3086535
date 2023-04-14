@@ -35,7 +35,7 @@ function sanitize_form()
 				if (strlen($value) != 10) {
 					$value = '';
 				} else {
-					$value = '(' . substr($value, 0, 3) . ') ' . substr($value, 3, 3) . '-' . substr($value, 6); // Format to (xxx) xxx-xxxx
+					$value = '(' . substr($value, 0, 3) . ') ' . substr($value, 3, 3) . '-' . substr($value, 6);
 				}
 				break;
 			default:
